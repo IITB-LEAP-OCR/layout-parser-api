@@ -1,9 +1,8 @@
 import os
 import json
-from subprocess import call,check_output
+from subprocess import call 
 import time
-from subprocess import check_output
-from typing import List, Tuple
+from typing import List
 
 from ..core.config import *
 from .models import *
@@ -18,10 +17,7 @@ models_dir_path=os.path.join(os.path.dirname(IMAGE_FOLDER),models_folder_name)
 docker_image_name= "shouryatyagi222/textron:1"
 
 def run_docker():
-    try:
-        check_output(['docker','run','--rm','--net','host','-v',f'{IMAGE_FOLDER}:/data',docker_image_name])
-    except:
-        check_output(['sudo','docker','run','--rm','--net','host','-v',f'{IMAGE_FOLDER}:/data',docker_image_name])
+    call(f'docker run --rm --net host-v {IMAGE_FOLDER}:/data {docker_image_name}', shell = True)
 
 def process_textron_output(folder_path: str) -> List[LayoutImageResponse]:
     try:
