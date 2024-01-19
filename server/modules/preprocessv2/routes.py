@@ -5,12 +5,12 @@ import cv2
 from fastapi import UploadFile, Form
 from fastapi.responses import Response
 from subprocess import call
-from tempfile import TemporaryDirectory
 
 from .models import *
 
-from .helper import save_uploaded_images
+from .helper import save_uploaded_images, delete_files_in_directory
 
+from ..core.config import IMAGE_FOLDER
 from ..preprocess.routes import router
 
 
@@ -25,7 +25,7 @@ async def get_font_properties_from_image(
 	"""
 	This endpoint returns the font attributes of text from images.
 	"""
-	temp = TemporaryDirectory()
+	temp = IMAGE_FOLDER()
 	image_path = save_uploaded_images(images,temp.name)
 	
 	config = {
@@ -55,5 +55,5 @@ async def get_font_properties_from_image(
 		res, im_png = cv2.imencode(".png", img)
 		response = Response(content=im_png.tobytes(),media_type="image/png")
 	
-	temp.cleanup()
+	delete_files_in_directory(IMAGE_FOLDER)
 	return response
