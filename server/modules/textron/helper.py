@@ -17,7 +17,7 @@ models_dir_path=os.path.join(os.path.dirname(IMAGE_FOLDER),models_folder_name)
 docker_image_name= "shouryatyagi222/textron:1"
 
 def run_docker():
-    call(f'docker run --rm --net host-v {IMAGE_FOLDER}:/data {docker_image_name}', shell = True)
+    call(f'docker run --rm --net host -v {IMAGE_FOLDER}:/data {docker_image_name}', shell = True)
 
 def process_textron_output(folder_path: str) -> List[LayoutImageResponse]:
     try:
