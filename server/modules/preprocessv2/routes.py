@@ -25,8 +25,8 @@ async def get_font_properties_from_image(
 	"""
 	This endpoint returns the font attributes of text from images.
 	"""
-	temp = IMAGE_FOLDER()
-	image_path = save_uploaded_images(images,temp.name)
+	temp = IMAGE_FOLDER
+	image_path = save_uploaded_images(images,temp)
 	
 	config = {
 		"model": "doctr" if model == ModelChoice.doctr else "tesseract",
@@ -40,17 +40,17 @@ async def get_font_properties_from_image(
 	print("Calling docker")
 	# model_dir = os.path.join(os.getcwd(),"models")
 	# call(f"docker run --rm -v {temp.name}:/model/data -v{model_dir}:/root/.cache/doctr/models textattrib")
-	call(f"docker run --rm -v {temp.name}:/model/data textattrib")
+	call(f"docker run --rm -v {temp}:/model/data textattrib", shell = True)
 	print("Done docker")
 	
 
 	if task == TaskChoice.attributes:
-		with open(os.path.join(temp.name,"out.json")) as f:
+		with open(os.path.join(temp,"out.json")) as f:
 			out = json.load(f)	
 		response = FontAttributesResponse.model_validate(out)
 	
 	else:
-		result_images = [os.path.join(temp.name,"result",i) for i in os.listdir(os.path.join(temp.name,"result"))]
+		result_images = [os.path.join(temp,"result",i) for i in os.listdir(os.path.join(temp,"result"))]
 		img = cv2.imread(result_images[0])
 		res, im_png = cv2.imencode(".png", img)
 		response = Response(content=im_png.tobytes(),media_type="image/png")
