@@ -21,12 +21,12 @@ async def detect_layout(images: List[UploadFile]):
 
     print(os.listdir(temp.name))
     
-    subprocess.call(f"docker run --rm -v {temp.name}:/model/data page-layout")
+    subprocess.call(f"docker run --rm -v {temp.name}:/model/data page-layout", shell=True)
 
     with open(os.path.join(temp.name,"out.json")) as f:
         out = json.load(f)
     response = out
-
+    temp.cleanup()
     return JSONResponse(content={"message": "Layout Detection Successful", "layout": response})
     
     
