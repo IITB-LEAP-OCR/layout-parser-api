@@ -32,7 +32,7 @@ async def table_layout_parser(
 	
 	print("Calling docker")
 	command = ["docker", "run", "--rm", "-v", f"{temp.name}:/model/data", "tabledockerize"]
-	call(command)
+	call(command, shell=True)
 	# call(f"docker run --rm -v {temp.name}:/model/data tabledockerize")
 	print("Done docker")
 
@@ -71,7 +71,7 @@ async def layout_parser_swagger_only_demo_table(
 
 	print("Calling docker")
 	command = ["docker", "run", "--rm", "-v", f"{temp.name}:/model/data", "tabledockerize"]
-	call(command)
+	call(command, shell=True)
 	print("Done docker")
 
 	files_in_temp = os.listdir(temp.name)
