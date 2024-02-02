@@ -31,8 +31,8 @@ async def table_layout_parser(
 	image_path = save_uploaded_images(images,temp.name)
 	
 	print("Calling docker")
-	command = ["docker", "run", "--rm", "-v", f"{temp.name}:/model/data", "tabledockerize"]
-	call(command, shell=True)
+	# command = ["docker", "run", "--rm", "-v", f"{temp.name}:/model/data", "tabledockerize"]
+	call(f"docker run --rm -v {temp.name}:/model/data tabledockerize", shell=True)
 	# call(f"docker run --rm -v {temp.name}:/model/data tabledockerize")
 	print("Done docker")
 
@@ -70,8 +70,10 @@ async def layout_parser_swagger_only_demo_table(
 	image_path = save_uploaded_images(images,temp.name)
 
 	print("Calling docker")
-	command = ["docker", "run", "--rm", "-v", f"{temp.name}:/model/data", "tabledockerize"]
-	call(command, shell=True)
+	# command = ["docker", "run", "--rm", "-v", f"{temp.name}:/model/data", "tabledockerize"]
+	# call(command, shell=True)
+	call(f"docker run --rm -v {temp.name}:/model/data tabledockerize", shell=True)
+
 	print("Done docker")
 
 	files_in_temp = os.listdir(temp.name)
