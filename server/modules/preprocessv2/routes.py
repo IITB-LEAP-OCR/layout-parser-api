@@ -56,5 +56,5 @@ async def get_font_properties_from_image(
 		res, im_png = cv2.imencode(".png", img)
 		response = Response(content=im_png.tobytes(),media_type="image/png")
 	
-	temp.cleanup()
+	# temp.cleanup()
 	return response
