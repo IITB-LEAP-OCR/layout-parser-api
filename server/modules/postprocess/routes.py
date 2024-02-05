@@ -68,12 +68,14 @@ def identify_scenetext_language(si_request: PostprocessRequest) -> list[SIRespon
     return process_layout_output(tmp.name)
 
 def run_docker(IMAGE_FOLDER, docker_image_name):
-        print(IMAGE_FOLDER)
-        try:
-            check_output(['docker','run','--rm','--net','host','-v',f'{IMAGE_FOLDER}:/model/data',docker_image_name],shell=True)
-        except:
-            check_output(['sudo', 'docker','run','--rm','--net','host','-v',f'{IMAGE_FOLDER}:/model/data',docker_image_name],shell=True)
-            # check_output(command)
+        # print(IMAGE_FOLDER)
+        # try:
+        #     check_output(['docker','run','--rm','--net','host','-v',f'{IMAGE_FOLDER}:/model/data',docker_image_name],shell=True)
+        # except:
+        #     check_output(['sudo', 'docker','run','--rm','--net','host','-v',f'{IMAGE_FOLDER}:/model/data',docker_image_name],shell=True)
+        #     # check_output(command)
+        call(f'docker run --rm --net host -v {IMAGE_FOLDER}:/model/data {docker_image_name}',shell=True)
+        
 @router.post(
     '/script',
     response_model=list[SIResponse],
